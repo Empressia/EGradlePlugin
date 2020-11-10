@@ -6,3 +6,11 @@
 
 # Ignore Gradle build output directory.
 /build
+
+# ignore Visual Studio Code output directory.
+/bin
+
+# ignore auto-generated files.
+/.settings
+/.classpath
+/.project
