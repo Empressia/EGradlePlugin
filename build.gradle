@@ -1,11 +1,24 @@
+buildscript {
+	repositories {
+		maven { url(repository_url); }
+	}
+	dependencies {
+		classpath group: "jp.empressia", name: "jp.empressia.gradle.plugin.misc", version: "1.0.0";
+	}
+}
 plugins {
 	id "java";
+	id "com.gradle.plugin-publish" version "0.12.0";
+	id "java-gradle-plugin";
 	id "maven-publish";
 }
+apply plugin: "jp.empressia.gradle.plugin.misc";
 
-ext.moduleName = "jp.empressia.template";
+ext.moduleName = "jp.empressia.gradle.plugin.misc";
 ext.junitVersion = "5.7.0";
 ext.hamcrestVersion = "2.2";
+// for plugin setting.
+//group = "jp.empressia";
 
 repositories {
 	jcenter();
@@ -13,6 +26,9 @@ repositories {
 }
 
 dependencies {
+	// use Gradle API.
+	implementation gradleApi();
+
 	// use JUnit test framework.
 	testImplementation(group:"org.junit.jupiter", name:"junit-jupiter-api", version:junitVersion);
 	testRuntimeOnly(group:"org.junit.jupiter", name:"junit-jupiter-engine", version:junitVersion);
@@ -43,6 +59,15 @@ test {
 	useJUnitPlatform();
 }
 
+gradlePlugin {
+	plugins {
+		EmpressiaPlugin  {
+			id = moduleName;
+			implementationClass = moduleName + "." + "Plugin";
+		}
+	}
+}
+
 publishing {
 	publications {
 		maven(MavenPublication) {
@@ -57,5 +82,22 @@ publishing {
 		maven {
 			url = repository_url;
 		}
+	}
+}
+
+pluginBundle {
+	website = "https://www.empressia.jp/";
+	vcsUrl = "https://github.com/Empressia/EGradlePlugin/";
+	description = "Miscellaneous Tasks by Empressia.";
+	tags = ["vscode", "task"];
+
+	plugins {
+		EmpressiaPlugin {
+			displayName = "Empressia Gradle Plugin";
+		}
+	}
+	mavenCoordinates {
+		artifactId = moduleName;
+		version = version;
 	}
 }
