@@ -87,9 +87,16 @@ public class CopySync extends DefaultTask {
 			}
 			Path fromPath = c.getFile().toPath();
 			Path toPath = intoPath.resolve(fromPath.getFileName());
-			if(Files.isRegularFile(fromPath) == false) {
-				String message = MessageFormat.format("コピー元[{0}]にファイル以外が指定されました。", fromPath);
-				throw new IllegalStateException(message);
+			switch(c.getChangeType()) {
+				case ADDED:
+				case MODIFIED: {
+					if(Files.isRegularFile(fromPath) == false) {
+						String message = MessageFormat.format("コピー元[{0}]にファイル以外が指定されました。", fromPath);
+						throw new IllegalStateException(message);
+					}
+					break;
+				}
+				default: { break; }
 			}
 			if(Files.isDirectory(toPath)) {
 				String message = MessageFormat.format("コピー先[{0}]がすでにディレクトリとして存在します。", toPath);
