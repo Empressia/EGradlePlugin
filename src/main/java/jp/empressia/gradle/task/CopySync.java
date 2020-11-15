@@ -75,7 +75,6 @@ public class CopySync extends DefaultTask {
 
 	@TaskAction
 	public void perform(InputChanges inputChanges) {
-		System.out.println(MessageFormat.format("is incremental -> {0}", inputChanges.isIncremental()));
 		Path intoPath = this.getInto().getAsFile().get().toPath();
 		if(Files.isDirectory(intoPath) == false) {
 			String message = MessageFormat.format("コピー先[{0}]にディレクトリ以外が指定されました。", intoPath);
