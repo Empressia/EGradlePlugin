@@ -1,0 +1,61 @@
+plugins {
+	id "java";
+	id "maven-publish";
+}
+
+ext.moduleName = "jp.empressia.template";
+ext.junitVersion = "5.7.0";
+ext.hamcrestVersion = "2.2";
+
+repositories {
+	jcenter();
+	maven { url(repository_url); }
+}
+
+dependencies {
+	// use JUnit test framework.
+	testImplementation(group:"org.junit.jupiter", name:"junit-jupiter-api", version:junitVersion);
+	testRuntimeOnly(group:"org.junit.jupiter", name:"junit-jupiter-engine", version:junitVersion);
+	testImplementation(group:"org.hamcrest", name:"hamcrest", version:hamcrestVersion);
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding "UTF-8";
+	options.compilerArgs << "-parameters";
+}
+
+java {
+	withJavadocJar();
+	withSourcesJar();
+}
+
+tasks.withType(Jar) {
+	archiveBaseName = moduleName;
+}
+
+javadoc {
+	options.charSet "UTF-8";
+	options.encoding "UTF-8";
+	options.addStringOption("Xdoclint:none", "-quiet");
+}
+
+test {
+	useJUnitPlatform();
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId = "jp.empressia";
+			artifactId = moduleName;
+			artifact jar;
+			artifact javadocJar;
+			artifact sourcesJar;
+		}
+	}
+	repositories {
+		maven {
+			url = repository_url;
+		}
+	}
+}
