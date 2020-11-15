@@ -3,7 +3,7 @@ buildscript {
 		maven { url(repository_url); }
 	}
 	dependencies {
-		classpath group: "jp.empressia", name: "jp.empressia.gradle.plugin.misc", version: "1.0.0";
+		classpath group: "gradle.plugin.jp.empressia", name: "jp.empressia.gradle.plugin.misc", version: "1.0.3";
 	}
 }
 plugins {
@@ -18,7 +18,7 @@ ext.moduleName = "jp.empressia.gradle.plugin.misc";
 ext.junitVersion = "5.7.0";
 ext.hamcrestVersion = "2.2";
 // for plugin setting.
-//group = "jp.empressia";
+group = "gradle.plugin.jp.empressia";
 
 repositories {
 	jcenter();
@@ -71,7 +71,7 @@ gradlePlugin {
 publishing {
 	publications {
 		maven(MavenPublication) {
-			groupId = "jp.empressia";
+			groupId = group;
 			artifactId = moduleName;
 			artifact jar;
 			artifact javadocJar;
